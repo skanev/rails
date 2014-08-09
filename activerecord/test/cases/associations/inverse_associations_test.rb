@@ -101,7 +101,7 @@ class AutomaticInverseFindingTests < ActiveRecord::TestCase
     assert !club_reflection.has_inverse?, "A has_many_through association should not find an inverse automatically"
   end
 
-  def test_polymorphic_relationships_should_still_not_have_inverses_when_non_polymorphic_relationship_has_the_same_name
+  def test_has_many_as_should_have_inverses
     man_reflection = Man.reflect_on_association(:polymorphic_face_without_inverse)
     face_reflection = Face.reflect_on_association(:man)
 
@@ -109,7 +109,7 @@ class AutomaticInverseFindingTests < ActiveRecord::TestCase
     assert face_reflection.has_inverse?, "For this test, the non-polymorphic association must have an inverse"
 
     assert_respond_to man_reflection, :has_inverse?
-    assert !man_reflection.has_inverse?, "The target of a polymorphic association should not find an inverse automatically"
+    assert man_reflection.has_inverse?, "The target of a polymorphic association should find an inverse automatically"
   end
 end
 

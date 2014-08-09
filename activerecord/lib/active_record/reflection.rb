@@ -520,8 +520,7 @@ Joining, Preloading and eager loading of these associations is deprecated and wi
         # from calling +klass+, +reflection+ will already be set to false.
         def valid_inverse_reflection?(reflection)
           reflection &&
-            klass.name == reflection.active_record.name &&
-            can_find_inverse_of_automatically?(reflection)
+            klass.name == reflection.active_record.name
         end
 
         # Checks to see if the reflection doesn't have any options that prevent

@@ -1,3 +1,11 @@
+*   Fixed `touch: true` in polymorphic relationships. Prior to the change the
+    other end of `belongs_to polymorphic: true, touch: true` was not touched
+    when the record is updated.
+
+    Fixes #16446.
+
+    *Stefan Kanev*
+
 *   Define `id_was` to get the previous value of the primary key.
 
     Currently when we call id_was and we have a custom primary key name
