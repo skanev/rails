@@ -1,5 +1,4 @@
 require "cases/helper"
-require 'models/man'
 require 'models/face'
 require 'models/interest'
 require 'models/zine'
@@ -10,6 +9,9 @@ require 'models/comment'
 require 'models/car'
 require 'models/bulb'
 require 'models/mixed_case_monkey'
+require 'models/man'
+require 'models/pet'
+require 'models/aircraft'
 
 class AutomaticInverseFindingTests < ActiveRecord::TestCase
   fixtures :ratings, :comments, :cars
@@ -110,6 +112,28 @@ class AutomaticInverseFindingTests < ActiveRecord::TestCase
 
     assert_respond_to man_reflection, :has_inverse?
     assert man_reflection.has_inverse?, "The target of a polymorphic association should find an inverse automatically"
+  end
+
+  def test_belongs_to_with_conditions_should_not_have_inverses_in_either_direction
+    pet_reflection = Pet.reflect_on_association(:man)
+    man_reflection = Man.reflect_on_association(:pet)
+
+    assert_respond_to pet_reflection, :has_inverse?
+    assert !pet_reflection.has_inverse?, "A belongs_to association should not find automatically an inverse with conditions"
+
+    assert_respond_to man_reflection, :has_inverse?
+    assert !man_reflection.has_inverse?, "A has_one association with conditions should not find its inverse automatically"
+  end
+
+  def test_belongs_to_with_foreign_key_should_not_have_inverses_in_either_direction
+    man_reflection = Man.reflect_on_association(:aircraft)
+    aircraft_reflection = Aircraft.reflect_on_association(:man)
+
+    assert_respond_to man_reflection, :has_inverse?
+    assert !man_reflection.has_inverse?, "A belongs_to association should not find automatically an inverse with a foreign_key"
+
+    assert_respond_to aircraft_reflection, :has_inverse?
+    assert !aircraft_reflection.has_inverse?, "A has_one association with conditions should not find its inverse automatically"
   end
 end
 

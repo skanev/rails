@@ -8,4 +8,6 @@ class Man < ActiveRecord::Base
   has_one :dirty_face, :class_name => 'Face', :inverse_of => :dirty_man
   has_many :secret_interests, :class_name => 'Interest', :inverse_of => :secret_man
   has_one :mixed_case_monkey
+  has_one :pet, -> { where(name: "Man's best friend") }
+  has_one :aircraft, foreign_key: 'pilot_id'
 end

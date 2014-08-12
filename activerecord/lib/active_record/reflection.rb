@@ -520,7 +520,11 @@ Joining, Preloading and eager loading of these associations is deprecated and wi
         # from calling +klass+, +reflection+ will already be set to false.
         def valid_inverse_reflection?(reflection)
           reflection &&
-            klass.name == reflection.active_record.name
+            klass.name == reflection.active_record.name &&
+            reflection.options[:inverse_of] != false &&
+            VALID_AUTOMATIC_INVERSE_MACROS.include?(reflection.macro) &&
+            (INVALID_AUTOMATIC_INVERSE_OPTIONS - [:polymorphic]).none? { |opt| reflection.options[opt] } &&
+            !reflection.scope
         end
 
         # Checks to see if the reflection doesn't have any options that prevent
